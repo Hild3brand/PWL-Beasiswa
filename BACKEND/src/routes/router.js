@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const c = require('../controller');
+const jwtMiddleware = require('../middleware/jwtMiddleware');
 
-const auth = require('./auth');
-const book = require('./book');
-const author = require('./author');
-const publisher = require('./publisher');
+router.post('/register', c.auth.register);
+router.post('/login', c.auth.login);
 
-router.use('/auth', auth);
-router.use('/books', book);
-router.use('/authors', author);
-router.use('/publishers', publisher);
+// Route Fakultas
+router.get('/fakultas', jwtMiddleware, c.fakultas.index);
+
+// Route Program studi
+router.get('/prodi', jwtMiddleware, c.prodi.index);
+
+// Route User
+router.get('/users', jwtMiddleware, c.user.index);
 
 module.exports = router;

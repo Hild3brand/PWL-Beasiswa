@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('pengajuan', {
+    await queryInterface.createTable('pengajuans', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -15,7 +15,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: {
-            tableName: 'user'
+            tableName: 'users'
           },
           key: 'id'
         },
@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: {
-            tableName: 'beasiswa'
+            tableName: 'beasiswas'
           },
           key: 'id'
         },
@@ -42,11 +42,11 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false
       }
@@ -54,6 +54,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('pengajuan', { schema: 'scholarship' });
+    await queryInterface.dropTable('pengajuan');
   }
 };
