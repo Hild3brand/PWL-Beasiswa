@@ -1,0 +1,29 @@
+# Ignore vendor directory
+/vendor
+
+# Ignore node_modules directory
+/node_modules
+
+# Ignore public storage files
+/public/storage
+
+# Ignore environment configuration file
+.env
+
+# Ignore log files
+/storage/*.log
+
+# Ignore compiled output and caches
+/bootstrap/cache
+/public/css
+/public/js
+/public/storage
+
+# Ignore user-specific files
+Homestead.yaml
+Homestead.json
+
+# Ignore PHPUnit coverage reports
+/phpunit.xml
+/phpunit.xml.dist
+/coverage
