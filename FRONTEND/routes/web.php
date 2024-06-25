@@ -20,6 +20,7 @@ Route::get('logout', [loginController::class, 'logout'])->name('logout');
 Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard/admin/users', [userController::class, 'usersIndex'])->name('admin-users');
 Route::get('/dashboard/admin/users/create', [userController::class, 'usersCreate'])->name('admin-users-create');
+
 Route::post('/dashboard/admin/users', [userController::class, 'usersStore'])->name('admin-users-store');
 Route::get('/dashboard/admin/users/{nrp}/edit', [UserController::class, 'usersEdit'])->name('admin-users-edit');
 Route::put('/dashboard/admin/users/{nrp}', [UserController::class, 'usersUpdate'])->name('admin-users-update');
@@ -59,3 +60,4 @@ Route::post('/dashboard/admin/periode', [userController::class, 'periodeStore'])
 Route::get('/dashboard/admin/periode/{id}/edit', [UserController::class, 'periodeEdit'])->name('admin-periode-edit');
 Route::put('/dashboard/admin/periode/{id}', [UserController::class, 'periodeUpdate'])->name('admin-periode-update');
 Route::delete('/dashboard/admin/periode/{id}', [userController::class, 'periodeDelete'])->name('admin-periode-delete');
+

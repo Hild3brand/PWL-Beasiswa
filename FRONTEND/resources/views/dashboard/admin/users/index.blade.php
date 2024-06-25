@@ -37,6 +37,7 @@
                 <td class="text-center">{{ $loop->iteration }}</td>
                 <td>{{ $user['nrp'] ?? 'N/A' }}</td>
                 <td>{{ $user['nama'] ?? 'N/A' }}</td>
+
                 <td>{{ $user['role']['nama_role'] ?? 'N/A' }}</td>
                 <td>{{ $user['programStudi']['fakultas']['nama'] ?? 'N/A' }}</td>
                 <td>{{ $user['programStudi']['nama'] ?? 'N/A' }}</td>

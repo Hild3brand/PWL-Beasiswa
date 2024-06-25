@@ -45,6 +45,7 @@ class UserController extends Controller
         }
     }
 
+
     public function usersCreate(Request $request)
     {
         $api_token = Session::get('api_token');
@@ -58,6 +59,7 @@ class UserController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
             ])->get('http://localhost:5000/api/v1/users/create');
+
 
             $responseData = json_decode($response->getBody()->getContents(), true);
             $data = $responseData['data']; // Adjust based on your JSON structure
@@ -110,6 +112,7 @@ class UserController extends Controller
             }
         }
     }
+
 
     // Ubah fungsi generateDefaultPassword
     private function generateDefaultPassword()
@@ -186,16 +189,19 @@ class UserController extends Controller
             return response()->json(['error' => 'API token not found'], 401);
         }
     
+
         try {
             // Fetch users create data
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
             ])->get('http://localhost:5000/api/v1/users/'. $nrp);
+
     
             
             $responseData = json_decode($response->getBody()->getContents(), true);
             $user = $responseData['data']; // Adjust based on your JSON structure
             Log::info('User data fetched successfully', ['user' => $user]);
+
             
             // Fetch fakultas data
             $fakultasResponse = Http::withHeaders([
@@ -205,18 +211,22 @@ class UserController extends Controller
             $fakultasData = json_decode($fakultasResponse->getBody()->getContents(), true);
             $fakultas = $fakultasData['data']; // Adjust based on your JSON structure
     
+
             // Fetch prodi data
             $prodiResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
             ])->get('http://localhost:5000/api/v1/prodi');
+
     
             $prodiData = json_decode($prodiResponse->getBody()->getContents(), true);
             $prodis = $prodiData['data']; // Adjust based on your JSON structure
     
+
             // Fetch roles data
             $rolesResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
             ])->get('http://localhost:5000/api/v1/role');
+
     
             $rolesData = json_decode($rolesResponse->getBody()->getContents(), true);
             $roles = $rolesData['data']; // Adjust based on your JSON structure
@@ -226,6 +236,7 @@ class UserController extends Controller
     
             if ($request->wantsJson()) {
                 return response()->json($user);
+
             } else {
                 return view('dashboard.admin.users.edit', [
                     'user' => $user, 
@@ -245,6 +256,7 @@ class UserController extends Controller
             }
         }
     }
+
 
     public function usersUpdate(Request $request, $nrp)
     {
@@ -266,6 +278,7 @@ class UserController extends Controller
         ]);
 
         try {
+
             // Prepare data to be sent to the API
             $data = [
                 'nrp' => $request->nrp,
@@ -306,6 +319,7 @@ class UserController extends Controller
     }
 
     public function usersDelete(Request $request, $nrp)
+
     {
         $api_token = Session::get('api_token');
 
@@ -338,7 +352,9 @@ class UserController extends Controller
         }
     }
 
+
     public function rolesIndex(Request $request)
+
     {
         $api_token = Session::get('api_token');
 
@@ -349,11 +365,13 @@ class UserController extends Controller
         try {
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
+
             ])->get('http://localhost:5000/api/v1/role');
 
             $responseData = json_decode($response->getBody()->getContents(), true);
             $data = $responseData['data'];
             // Log:info('test', ['test roles' => $data]);
+
 
             $prodi_id = Session::get('prodi_id');
             $role_id = Session::get('role_id');
@@ -382,6 +400,7 @@ class UserController extends Controller
         try {
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $api_token,
+
             ])->get('http://localhost:5000/api/v1/role/create');
 
             $responseData = json_decode($response->getBody()->getContents(), true);
@@ -393,6 +412,7 @@ class UserController extends Controller
             if ($request->wantsJson()) {
                 return response()->json($data);
             } else {
+
                 return view('dashboard.admin.roles.create', [
                     'data' => $data,
                     'role_id' => $role_id, 
@@ -414,6 +434,7 @@ class UserController extends Controller
         if (!$api_token) {
             return response()->json(['error' => 'API token not found'], 401);
         }
+
 
         $request->validate([
             'name' => 'required|string|max:255',

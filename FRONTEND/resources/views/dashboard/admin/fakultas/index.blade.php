@@ -35,8 +35,10 @@
                 <td>{{ $faculty['kode'] ?? 'N/A' }}</td>
                 <td>{{ $faculty['nama'] ?? 'N/A' }}</td>
                 <td>
+
                     <a href="{{ url("/dashboard/admin/fakultas/{$faculty['kode']}/edit") }}" class="badge bg-success"><span data-feather="edit"></span></a>
                     <form action="{{ url("/dashboard/admin/fakultas/{$faculty['kode']}") }}" method="POST" class="d-inline">
+
                         @method('delete')
                         @csrf
                         <button class="badge bg-danger border-0" onclick="return confirm('Apakah Anda yakin ingin menghapus Fakultas ini?')"><span data-feather="x-circle"></span></button>

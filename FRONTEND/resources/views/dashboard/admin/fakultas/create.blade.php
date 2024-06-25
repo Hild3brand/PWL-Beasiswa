@@ -5,6 +5,7 @@
     <h1 class="h2">Tambah Fakultas</h1>
 </div>
 
+
 <form method="POST" action="{{ route('admin-fakultas-store') }}">
     @csrf
     <div class="mb-3">
@@ -28,3 +29,4 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection
+

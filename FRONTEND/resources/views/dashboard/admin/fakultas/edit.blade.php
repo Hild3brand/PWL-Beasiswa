@@ -5,6 +5,7 @@
     <h1 class="h2">Edit Fakultas</h1>
 </div>
 
+
 @if($fakultas)
     <form method="POST" action="/dashboard/admin/fakultas/{{ $fakultas['kode'] }}">
         @method('put')
@@ -37,3 +38,4 @@
     </div>
 @endif
 @endsection
+

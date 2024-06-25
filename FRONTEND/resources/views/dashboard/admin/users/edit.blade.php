@@ -5,6 +5,7 @@
     <h1 class="h2">Edit User</h1>
 </div>
 
+
 <form method="POST" action="/dashboard/admin/users/{{ $user['nrp'] }}">
     @method('PUT')
     @csrf
@@ -43,6 +44,7 @@
       <input type="password" class="form-control @error('password') is-invalid @enderror"
       id="password" name="password" placeholder="Enter new password" value="{{ old('password', $user['password']) }}">
       @error('password')
+
           <div class="invalid-feedback">
             {{ $message }}
           </div>
@@ -51,7 +53,9 @@
     <div class="mb-3">
       <label for="status" class="form-label">Status Mahasiswa</label>
       <input type="text" class="form-control @error('status') is-invalid @enderror"
+
       id="status" name="status" placeholder="Contoh: budi@test.com" required value="{{ old('status', $user['status']) }}">
+
       @error('status')
           <div class="invalid-feedback">
             {{ $message }}
@@ -62,7 +66,9 @@
       <label for="role_id" class="form-label">Role</label>
       <select name="role_id" class="form-select @error('role_id') is-invalid @enderror" id="role_id" required>
           @foreach ($roles as $role)
+
             @if ($user['role_id'] == $role['id'])
+
               <option value={{ $role['id'] }} selected>{{ $role['nama_role'] }}</option>
             @else
               <option value={{ $role['id'] }}>{{ $role['nama_role'] }}</option>
@@ -75,6 +81,7 @@
           </div>
       @enderror
     </div>
+
     {{-- <div class="mb-3">
         <label for="fakultas_id">Fakultas</label>
         <select name="fakultas_id" class="form-select">
@@ -95,9 +102,12 @@
       @error('program_studi_id')
           <div class="invalid-feedback">
               {{ $message }}
+
           </div>
       @enderror
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
 @endsection
+
