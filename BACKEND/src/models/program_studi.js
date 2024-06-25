@@ -10,17 +10,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      programStudi.hasMany(models.Fakultas, {foreignKey: 'fakultas_id', as: 'fakultas'});
+      programStudi.belongsTo(models.Fakultas, {
+          foreignKey: 'fakultas_id',
+          as: 'fakultas'
+      });
+      programStudi.hasMany(models.User, {
+          foreignKey: 'program_studi_id',
+          as: 'users'
+      });
     }
   }
   programStudi.init({
-    id: DataTypes.INTEGER,
     kode: DataTypes.STRING,
     nama: DataTypes.STRING,
-    fakultas_id: DataTypes.INT,
+    fakultas_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'programStudi',
+    tableName: 'program_studis',
   });
   return programStudi;
 };

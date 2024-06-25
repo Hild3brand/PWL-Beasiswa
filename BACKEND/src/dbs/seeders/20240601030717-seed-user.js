@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "user",
+      "users",
       [
         {
           nrp: "2272037",
@@ -16,7 +16,7 @@ module.exports = {
           status: "Aktif",
           role_id: "1",
           program_studi_id: "1",
-          created_at: new Date(),
+          createdAt: new Date(),
         },
         {
           nrp: "2272022",
@@ -26,7 +26,7 @@ module.exports = {
           status: "Aktif",
           role_id: "2",
           program_studi_id: "1",
-          created_at: new Date(),
+          createdAt: new Date(),
         },
         {
           nrp: "2272018",
@@ -36,7 +36,7 @@ module.exports = {
           status: "Aktif",
           role_id: "3",
           program_studi_id: "1",
-          created_at: new Date(),
+          createdAt: new Date(),
         },
         {
           nrp: "2372001",
@@ -46,7 +46,7 @@ module.exports = {
           status: "Aktif",
           role_id: "4",
           program_studi_id: "1",
-          created_at: new Date(),
+          createdAt: new Date(),
         },
       ],
       {}
