@@ -34,7 +34,6 @@ module.exports = {
         }
     },
 
-
     create: async (req, res, next) => {
         try {
             const { nrp, nama, email, password, status, role_id, program_studi_id } = req.body;
@@ -201,4 +200,5 @@ module.exports = {
             next(err);
         }
     },
+
 }
