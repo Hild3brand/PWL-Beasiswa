@@ -11,7 +11,6 @@ module.exports = {
             const accessToken = user.generateToken();
             console.log(accessToken);
 
-
             return res.status(200).json({
                 status: 'OK',
                 message: 'Login Success',

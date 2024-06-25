@@ -8,9 +8,15 @@
 <form method="POST" action="/dashboard/admin/prodi">
     @csrf
     <div class="mb-3">
-      <label for="fakultas_id" class="form-label">Kode Fakultas</label>
-      <input type="text" class="form-control @error('prodis_id') is-invalid @enderror"
-      id="fakultas_id" name="fakultas_id" placeholder="{{auth()->user()->fakultas_id }} - {{ auth()->user()->fakultas->name }}" required value="{{auth()->user()->fakultas->kode }}" readonly>
+
+      <label for="fakultas_id" class="form-label">Fakultas</label>
+      <select class="form-control @error('fakultas_id') is-invalid @enderror" id="fakultas_id" name="fakultas_id" required>
+          <option value="">Pilih Fakultas</option>
+          @foreach($fakultas as $f)
+              <option value="{{ $f['id'] }}">{{ $f['kode'] }} - {{ $f['nama'] }}</option>
+          @endforeach
+      </select>
+
       @error('fakultas_id')
           <div class="invalid-feedback">
             {{ $message }}
@@ -19,7 +25,9 @@
     </div>
     <div class="mb-3">
       <label for="kode" class="form-label">Kode Program Studi</label>
-      <input type="text" class="form-control @error('id') is-invalid @enderror"
+
+      <input type="text" class="form-control @error('kode') is-invalid @enderror"
+
       id="kode" name="kode" placeholder="1 - 100" required>
       @error('kode')
           <div class="invalid-feedback">
@@ -39,4 +47,6 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
 @endsection
+

@@ -37,8 +37,10 @@
                 <td>{{ $prodi['kode'] ?? 'N/A' }}</td>
                 <td>{{ $prodi['nama'] ?? 'N/A' }}</td>
                 <td>
-                    <a href="{{ url("/dashboard/admin/prodi/{$prodi['id']}/edit") }}" class="badge bg-success"><span data-feather="edit"></span></a>
-                    <form action="{{ url("/dashboard/admin/prodi/{$prodi['id']}") }}" method="POST" class="d-inline">
+
+                    <a href="{{ url("/dashboard/admin/prodi/{$prodi['kode']}/edit") }}" class="badge bg-success"><span data-feather="edit"></span></a>
+                    <form action="{{ url("/dashboard/admin/prodi/{$prodi['kode']}") }}" method="POST" class="d-inline">
+
                         @method('delete')
                         @csrf
                         <button class="badge bg-danger border-0" onclick="return confirm('Apakah Anda yakin ingin menghapus program studi ini?')"><span data-feather="x-circle"></span></button>

@@ -37,15 +37,13 @@
                 <td class="text-center">{{ $loop->iteration }}</td>
                 <td>{{ $user['nrp'] ?? 'N/A' }}</td>
                 <td>{{ $user['nama'] ?? 'N/A' }}</td>
-                <td>{{ $user['role_id'] ?? 'N/A' }}</td>
+
+                <td>{{ $user['role']['nama_role'] ?? 'N/A' }}</td>
                 <td>{{ $user['programStudi']['fakultas']['nama'] ?? 'N/A' }}</td>
                 <td>{{ $user['programStudi']['nama'] ?? 'N/A' }}</td>
                 <td>
-                    <a href="{{ url("/dashboard/admin/users/{$user['nrp']}") }}" class="badge bg-success" onclick="event.preventDefault(); document.getElementById('edit-form-{{ $user['nrp'] }}').submit();"><span data-feather="edit"></span></a>
-                    <form id="edit-form-{{ $user['nrp'] }}" action="{{ url("/dashboard/admin/users/{$user['nrp']}") }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('POST')
-                    </form>                    <form action="{{ url("/dashboard/admin/users/{$user['nrp']}") }}" method="POST" class="d-inline">
+                    <a href="{{ url("/dashboard/admin/users/{$user['nrp']}/edit") }}" class="badge bg-success"><span data-feather="edit"></span></a>
+                    <form action="{{ url("/dashboard/admin/users/{$user['nrp']}") }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button class="badge bg-danger border-0" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')"><span data-feather="x-circle"></span></button>

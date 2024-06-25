@@ -6,6 +6,14 @@
     @if($role_id == 2)
     <p class="text-center" aria-current="page"><b>Fakultas Menu</b></p>
     @endif
+
+    @if($role_id == 3)
+    <p class="text-center" aria-current="page"><b>Program Studi Menu</b></p>
+    @endif
+    @if($role_id == 4)
+    <p class="text-center" aria-current="page"><b>Mahasiswa Menu</b></p>
+    @endif
+
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" aria-current="page" href="/dashboard">
@@ -21,6 +29,14 @@
         </a>
       </li>
       <li class="nav-item">
+
+        <a class="nav-link {{ Request::is('dashboard/admin/users*') ? 'active' : '' }}" href="/dashboard/admin/roles">
+          <span data-feather="users"></span>
+          Roles
+        </a>
+      </li>
+      <li class="nav-item">
+
         <a class="nav-link {{ Request::is('dashboard/admin/fakultas*') ? 'active' : '' }}" href="/dashboard/admin/fakultas">
           <span data-feather="briefcase"></span>
           Fakultas
@@ -39,18 +55,47 @@
         </a>
       </li>
       @endif
-    </ul>
 
-    <ul class="nav flex-column">
       @if($role_id == 2)
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('dashboard/admin/users*') ? 'active' : '' }}" href="/dashboard/admin/users">
+        <a class="nav-link {{ Request::is('dashboard/admin/users*') ? 'active' : '' }}" href="/dashboard/fakultas/beasiswa">
           <span data-feather="users"></span>
           Beasiswa Internal
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {{ Request::is('dashboard/admin/fakultas*') ? 'active' : '' }}" href="/dashboard/admin/fakultas">
+        <a class="nav-link {{ Request::is('dashboard/admin/fakultas*') ? 'active' : '' }}" href="/dashboard/fakultas/pengajuan">
+          <span data-feather="briefcase"></span>
+          Pengajuan Beasiswa
+        </a>
+      </li>
+      @endif
+      @if($role_id == 3)
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('dashboard/admin/users*') ? 'active' : '' }}" href="/dashboard/prodi/beasiswa">
+          <span data-feather="users"></span>
+          Beasiswa Internal
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('dashboard/admin/fakultas*') ? 'active' : '' }}" href="/dashboard/prodi/pengajuan">
+          <span data-feather="briefcase"></span>
+          Pengajuan Beasiswa
+        </a>
+      </li>
+      @endif
+      @if($role_id == 4)
+      <li class="nav-item">
+        <a class="nav-link {{ Request::is('dashboard/admin/users*') ? 'active' : '' }}" href="/dashboard/mahasiswa/beasiswa">
+
+          <span data-feather="users"></span>
+          Beasiswa Internal
+        </a>
+      </li>
+      <li class="nav-item">
+
+        <a class="nav-link {{ Request::is('dashboard/admin/fakultas*') ? 'active' : '' }}" href="/dashboard/mahasiswa/pengajuan">
+
           <span data-feather="briefcase"></span>
           Pengajuan Beasiswa
         </a>
