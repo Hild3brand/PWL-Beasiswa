@@ -1,54 +1,42 @@
-const { Fakultas } = require('../models');
-const fakultas = require('../models/fakultas');
+const { Fakultas, programStudi, User, Role } = require('../models');
 const schema = require('../validation');
 const Validator = require('fastest-validator');
 const v = new Validator;
+const bcrypt = require('bcrypt'); // Import bcrypt
 
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const fakultas = await Fakultas.findAll();
+            const users = await Role.findAll();
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Get All Fakultas Success',
-                data: fakultas
+                message: 'Get All User Success',
+                data: users
             });
         } catch (err) {
             next(err);
         }
     },
-
     create: async (req, res, next) => {
         try {
-            const { kode, nama } = req.body;
+            const { nama_role } = req.body;
             
             const body = req.body;
-            const validate = v.validate(body, schema.fakultas.create);
+            const validate = v.validate(body, schema.role.create);
             console.log(validate);
     
             if (validate.length) {
                 return res.status(400).json(validate);
             }
     
-            const fakultas = await Fakultas.findOne({ where: { kode } });
-    
-            if (fakultas) {
-                return res.status(409).json({
-                    status: 'CONFLICT',
-                    message: 'Data Already Exist',
-                    data: null
-                });
-            }
-    
-            const created = await Fakultas.create({
-                kode, 
-                nama,
+            const created = await Role.create({
+                nama_role,
             });
     
             return res.status(201).json({
                 status: 'CREATED',
-                message: 'New Fakultas Created',
+                message: 'New Role Created',
                 data: created
             });
         } catch (err) {
@@ -58,38 +46,38 @@ module.exports = {
 
     update: async (req, res, next) => {
         try {
-            const { kode } = req.params;
-            let { nama } = req.body;
+            const { id } = req.params;
+            let { nama_role } = req.body;
 
             const body = req.body;
-            const validate = v.validate(body, schema.fakultas.update);
+            const validate = v.validate(body, schema.role.update);
 
             if (validate.length) {
                 return res.status(400).json(validate);
             }
 
-            const fakultas = await Fakultas.findOne({ where: { kode: kode } });
-            if (!fakultas) {
+            const role = await Role.findOne({ where: { id: id } });
+            if (!role) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `fakultas Didn't Exist`,
+                    message: `Role Didn't Exist`,
                     data: null
                 })
             }
 
-            if (!nama) nama = fakultas.nama;
+            if (!nama_role) nama_role = role.nama_role;
 
-            const updated = await Fakultas.update({
-                nama,
+            const updated = await Role.update({
+                nama_role,
             }, {
                 where: {
-                    kode: kode
+                    id: id
                 }
             })
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Update User Success',
+                message: 'Update Role Success',
                 data: updated
             })
         } catch (err) {
@@ -99,58 +87,57 @@ module.exports = {
 
     delete: async (req, res, next) => {
         try {
-            const { kode } = req.params;
+            const { id } = req.params;
 
-            const fakultas = await Fakultas.findOne({
+            const role = await Role.findOne({
                 where: {
-                    kode: kode
+                    id: id
                 }
             });
 
-            if (!fakultas) {
+            if (!role) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `Fakultas Didn't Exist`,
+                    message: `Role Didn't Exist`,
                     data: null
                 });
             }
 
-            const deleted = await Fakultas.destroy({
+            const deleted = await Role.destroy({
                 where: {
-                    kode: kode
+                    id: id
                 }
             });
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Delete User Success',
+                message: 'Delete Role Success',
                 data: deleted
             });
         } catch (err) {
             next(err);
         }
     },
-
-    getByKode: async (req, res, next) => {
+    getById: async (req, res, next) => {
         try {
-            const { kode } = req.params;
+            const { id } = req.params;
 
-            const fakultas = await Fakultas.findOne({
-                where: { kode },
+            const role = await Role.findOne({
+                where: { id },
             });
 
-            if (!fakultas) {
+            if (!role) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `Fakultas with kode ${kode} not found`,
+                    message: `Role with id ${id} not found`,
                     data: null
                 });
             }
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Get Fakultas by Kode Success',
-                data: fakultas
+                message: 'Get Role by id Success',
+                data: role
             });
         } catch (err) {
             next(err);

@@ -6,7 +6,14 @@ const v = new Validator;
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const prodi = await programStudi.findAll();
+            const prodi = await programStudi.findAll(
+                {
+                    include: {
+                        model:Fakultas,
+                        as: 'fakultas'
+                    }
+                }
+            );
 
             return res.status(200).json({
                 status: 'OK',
@@ -18,122 +25,144 @@ module.exports = {
         }
     },
 
-    // create: async (req, res, next) => {
-    //     try {
-    //         const { isbn, judul, author_id, pub_id } = req.body;
+    create: async (req, res, next) => {
+        try {
+            const { kode, nama, fakultas_id } = req.body;
+            
+            const body = req.body;
+            const validate = v.validate(body, schema.program_studi.create);
+            console.log(validate);
+    
+            if (validate.length) {
+                return res.status(400).json(validate);
+            }
+    
+            const prodi = await programStudi.findOne({ where: { kode } });
+    
+            if (prodi) {
+                return res.status(409).json({
+                    status: 'CONFLICT',
+                    message: 'Data Already Exist',
+                    data: null
+                });
+            }
+    
+            const created = await programStudi.create({
+                kode,
+                nama, 
+                fakultas_id: Number(fakultas_id), // Convert role_id to number
+            });
+    
+            return res.status(201).json({
+                status: 'CREATED',
+                message: 'New Prodi Created',
+                data: created
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    //         const body = req.body;
-    //         const validate = v.validate(body, schema.book.createBook);
+    update: async (req, res, next) => {
+        try {
+            const { kode } = req.params;
+            let { nama, fakultas_id } = req.body;
 
-    //         if (validate.length) {
-    //             return res.status(400).json(validate);
-    //         }
+            const body = req.body;
+            const validate = v.validate(body, schema.program_studi.update);
 
-    //         const book = await Book.findOne({ where: { isbn } });
+            if (validate.length) {
+                return res.status(400).json(validate);
+            }
 
-    //         if (book) {
-    //             return res.status(409).json({
-    //                 status: 'CONFLICT',
-    //                 message: 'Data Already Exist',
-    //                 data: null
-    //             });
-    //         }
+            const prodi = await programStudi.findOne({ where: { kode: kode } });
+            if (!prodi) {
+                return res.status(404).json({
+                    status: 'NOT_FOUND',
+                    message: `Program Studi Didn't Exist`,
+                    data: null
+                })
+            }
 
-    //         const created = await Book.create({
-    //             isbn,
-    //             judul,
-    //             author_id,
-    //             pub_id
-    //         });
+            if (!nama) nama = prodi.nama;
+            if (!fakultas_id) fakultas_id = prodi.fakultas_id;
 
-    //         return res.status(201).json({
-    //             status: 'CREATED',
-    //             message: 'New Book Created',
-    //             data: created
-    //         });
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // },
+            const updated = await programStudi.update({
+                nama, 
+                fakultas_id
+            }, {
+                where: {
+                    kode: kode
+                }
+            })
 
-    // update: async (req, res, next) => {
-    //     try {
-    //         const { id } = req.params;
-    //         let { isbn, judul, author_id, pub_id } = req.body;
+            return res.status(200).json({
+                status: 'OK',
+                message: 'Update Program Studi Success',
+                data: updated
+            })
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    //         const body = req.body;
-    //         const validate = v.validate(body, schema.book.updateBook);
+    delete: async (req, res, next) => {
+        try {
+            const { kode } = req.params;
 
-    //         if (validate.length) {
-    //             return res.status(400).json(validate);
-    //         }
+            const prodi =  programStudi.findOne({
+                where: {
+                    kode: kode
+                }
+            });
 
-    //         const book = await Book.findOne({ where: { id: id } });
-    //         if (!book) {
-    //             return res.status(404).json({
-    //                 status: 'NOT_FOUND',
-    //                 message: `Book Didn't Exist`,
-    //                 data: null
-    //             })
-    //         }
+            if (!prodi) {
+                return res.status(404).json({
+                    status: 'NOT_FOUND',
+                    message:  `Program Studi Did'nt Exist`,
+                    data: null
+                });
+            }
 
-    //         if (!isbn) isbn = book.isbn;
-    //         if (!judul) judul = book.judul;
-    //         if (!author_id) author_id = book.author_id;
-    //         if (!pub_id) pub_id = book.pub_id;
+            const deleted = await programStudi.destroy({
+                where: {
+                    kode: kode
+                }
+            });
 
-    //         const updated = await Book.update({
-    //             isbn,
-    //             judul,
-    //             author_id,
-    //             pub_id
-    //         }, {
-    //             where: {
-    //                 id: id
-    //             }
-    //         })
+            return res.status(200).json({
+                status: 'OK',
+                message: 'Delete Program Studi Success',
+                data: deleted
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 
-    //         return res.status(200).json({
-    //             status: 'OK',
-    //             message: 'Update Book Success',
-    //             data: updated
-    //         })
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // },
+    getByKode: async (req, res, next) => {
+        try {
+            const { kode } = req.params;
 
-    // delete: async (req, res, next) => {
-    //     try {
-    //         const { id } = req.params;
+            const prodi = await programStudi.findOne({
+                where: { kode },
+            });
 
-    //         const book = await Book.findOne({
-    //             where: {
-    //                 id: id
-    //             }
-    //         });
+            if (!prodi) {
+                return res.status(404).json({
+                    status: 'NOT_FOUND',
+                    message: `Program studi with kode ${kode} not found`,
+                    data: null
+                });
+            }
 
-    //         if (!book) {
-    //             return res.status(404).json({
-    //                 status: 'NOT_FOUND',
-    //                 message: `Book Didn't Exist`,
-    //                 data: null
-    //             });
-    //         }
-
-    //         const deleted = await Book.destroy({
-    //             where: {
-    //                 id: id
-    //             }
-    //         });
-
-    //         return res.status(200).json({
-    //             status: 'OK',
-    //             message: 'Delete Book Success',
-    //             data: deleted
-    //         });
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // }
+            return res.status(200).json({
+                status: 'OK',
+                message: 'Get Program studi by Kode Success',
+                data: prodi
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
 }
