@@ -10,7 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      programStudi.hasMany(models.User, {foreignKey: 'program_studi_id'});
+      programStudi.belongsTo(models.Fakultas, {
+          foreignKey: 'fakultas_id',
+          as: 'fakultas'
+      });
+      programStudi.hasMany(models.User, {
+          foreignKey: 'program_studi_id',
+          as: 'users'
+      });
     }
   }
   programStudi.init({

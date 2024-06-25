@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Define association here
+      User.belongsTo(models.programStudi, { foreignKey: 'program_studi_id', as: 'programStudi' });
+      User.belongsTo(models.Role, { foreignKey: 'role_id', as: 'role' }); // Define association with Role
     }
 
     async checkPassword(password) {
@@ -32,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         program_studi_id: this.program_studi_id,
       };
       console.log(JWT_EXPIRED_TIME);
-      return jwt.sign(payload, JWT_SECRET_KEY);
+      return jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: JWT_EXPIRED_TIME });
     }
 
     static authenticate = async ({email, password}) => {

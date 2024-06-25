@@ -1,5 +1,4 @@
-const { Fakultas } = require('../models');
-const fakultas = require('../models/fakultas');
+const { Beasiswa, Periode } = require('../models');
 const schema = require('../validation');
 const Validator = require('fastest-validator');
 const v = new Validator;
@@ -7,12 +6,21 @@ const v = new Validator;
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const fakultas = await Fakultas.findAll();
+            const beasiswa = await Beasiswa.findAll(
+                {
+                    include: [
+                        {
+                            model: Periode,
+                            as: 'periode' // specify the alias for programStudi if needed
+                        }
+                    ]
+                }
+            );
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Get All Fakultas Success',
-                data: fakultas
+                message: 'Get All Beasiswa Success',
+                data: beasiswa
             });
         } catch (err) {
             next(err);
@@ -21,34 +29,25 @@ module.exports = {
 
     create: async (req, res, next) => {
         try {
-            const { kode, nama } = req.body;
+            const { jenis, nama, periode_id } = req.body;
             
             const body = req.body;
-            const validate = v.validate(body, schema.fakultas.create);
+            const validate = v.validate(body, schema.beasiswa.create);
             console.log(validate);
     
             if (validate.length) {
                 return res.status(400).json(validate);
             }
     
-            const fakultas = await Fakultas.findOne({ where: { kode } });
-    
-            if (fakultas) {
-                return res.status(409).json({
-                    status: 'CONFLICT',
-                    message: 'Data Already Exist',
-                    data: null
-                });
-            }
-    
-            const created = await Fakultas.create({
-                kode, 
+            const created = await Beasiswa.create({
+                jenis, 
                 nama,
+                periode_id
             });
     
             return res.status(201).json({
                 status: 'CREATED',
-                message: 'New Fakultas Created',
+                message: 'New Beasiswa Created',
                 data: created
             });
         } catch (err) {
@@ -58,38 +57,40 @@ module.exports = {
 
     update: async (req, res, next) => {
         try {
-            const { kode } = req.params;
-            let { nama } = req.body;
+            const { id } = req.params;
+            let { jenis,nama,periode_id } = req.body;
 
             const body = req.body;
-            const validate = v.validate(body, schema.fakultas.update);
+            const validate = v.validate(body, schema.beasiswa.update);
 
             if (validate.length) {
                 return res.status(400).json(validate);
             }
 
-            const fakultas = await Fakultas.findOne({ where: { kode: kode } });
-            if (!fakultas) {
+            const beasiswa = await Beasiswa.findOne({ where: { id: id } });
+            if (!beasiswa) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `fakultas Didn't Exist`,
+                    message: `beasiswa Didn't Exist`,
                     data: null
                 })
             }
 
-            if (!nama) nama = fakultas.nama;
+            if (!nama) nama = beasiswa.nama;
 
-            const updated = await Fakultas.update({
+            const updated = await Beasiswa.update({
+                jenis,
                 nama,
+                periode_id
             }, {
                 where: {
-                    kode: kode
+                    id: id
                 }
             })
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Update User Success',
+                message: 'Update Beasiswa Success',
                 data: updated
             })
         } catch (err) {
@@ -99,31 +100,31 @@ module.exports = {
 
     delete: async (req, res, next) => {
         try {
-            const { kode } = req.params;
+            const { id } = req.params;
 
-            const fakultas = await Fakultas.findOne({
+            const beasiswa = await Beasiswa.findOne({
                 where: {
-                    kode: kode
+                    id: id
                 }
             });
 
-            if (!fakultas) {
+            if (!beasiswa) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `Fakultas Didn't Exist`,
+                    message: `Beasiswa Didn't Exist`,
                     data: null
                 });
             }
 
-            const deleted = await Fakultas.destroy({
+            const deleted = await Beasiswa.destroy({
                 where: {
-                    kode: kode
+                    id: id
                 }
             });
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Delete User Success',
+                message: 'Delete Beasiswa Success',
                 data: deleted
             });
         } catch (err) {
@@ -131,30 +132,29 @@ module.exports = {
         }
     },
 
-    getByKode: async (req, res, next) => {
+    getById: async (req, res, next) => {
         try {
-            const { kode } = req.params;
+            const { id } = req.params;
 
-            const fakultas = await Fakultas.findOne({
-                where: { kode },
+            const beasiswa = await Beasiswa.findOne({
+                where: { id },
             });
 
-            if (!fakultas) {
+            if (!beasiswa) {
                 return res.status(404).json({
                     status: 'NOT_FOUND',
-                    message: `Fakultas with kode ${kode} not found`,
+                    message: `Beasiswa with id ${id} not found`,
                     data: null
                 });
             }
 
             return res.status(200).json({
                 status: 'OK',
-                message: 'Get Fakultas by Kode Success',
-                data: fakultas
+                message: 'Get Beasiswa by id Success',
+                data: beasiswa
             });
         } catch (err) {
             next(err);
         }
     },
-
 }
